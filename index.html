@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ты меня любишь?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 60px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 50px;
+            font-weight: 700;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #yesBtn {
+            background: #4CAF50;
+            color: white;
+            width: 150px;
+        }
+
+        #yesBtn:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+
+        #noBtn {
+            background: #f44336;
+            color: white;
+            width: 150px;
+            position: relative;
+        }
+
+        #noBtn:hover {
+            background: #da190b;
+        }
+
+        .message {
+            font-size: 24px;
+            color: #4CAF50;
+            margin-top: 40px;
+            font-weight: bold;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>❤️ Ты меня любишь? ❤️</h1>
+        
+        <div class="buttons">
+            <button id="yesBtn">Да</button>
+            <button id="noBtn">Нет</button>
+        </div>
+
+        <div class="message" id="message">И я тебя 🙂</div>
+    </div>
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const message = document.getElementById('message');
+
+        yesBtn.addEventListener('click', function() {
+            message.style.display = 'block';
+        });
+
+        noBtn.addEventListener('mouseover', function() {
+            const randomX = Math.random() * 200 - 100;
+            const randomY = Math.random() * 200 - 100;
+            
+            noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        });
+
+        noBtn.addEventListener('click', function() {
+            const randomX = Math.random() * 200 - 100;
+            const randomY = Math.random() * 200 - 100;
+            
+            noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        });
+    </script>
+</body>
+</html>
