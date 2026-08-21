@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Одар-донар: Спортивный Челлендж</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .task-container {
+            margin-bottom: 30px;
+        }
+
+        .task {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .task.completed {
+            background: #e8f5e9;
+            border-left-color: #4caf50;
+            opacity: 0.7;
+        }
+
+        .task.active {
+            background: #fff3e0;
+            border-left-color: #ff9800;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .task-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .task-number {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+        }
+
+        .task.completed .task-number {
+            background: #4caf50;
+        }
+
+        .task-description {
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .task-roast {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 3px solid #ff5252;
+            font-style: italic;
+            color: #d32f2f;
+            font-size: 0.95em;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .btn-complete {
+            background: #4caf50;
+            color: white;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .btn-complete:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .btn-complete:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .unlock-section {
+            background: #fff9c4;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            text-align: center;
+            border: 2px dashed #fbc02d;
+            display: none;
+        }
+
+        .unlock-section.active {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .unlock-section h2 {
+            color: #ff9800;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .unlock-section p {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .btn-create-challenge {
+            background: #764ba2;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.1em;
+        }
+
+        .btn-create-challenge:hover {
+            background: #6a3d99;
+        }
+
+        .disclaimer {
+            position: fixed;
+            bottom: 5px;
+            right: 10px;
+            font-size: 0.65em;
+            color: #999;
+            max-width: 200px;
+            text-align: right;
+            line-height: 1.2;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 5px;
+            border-radius: 3px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏆 Одар-донар Челлендж 🏆</h1>
+            <p class="subtitle">Спортивные задачки для настоящего чемпиона</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill">0%</div>
+        </div>
+
+        <div class="task-container" id="taskContainer"></div>
+
+        <div class="unlock-section" id="unlockSection">
+            <h2>🎉 Поздравляем! 🎉</h2>
+            <p>Ты прошел все задачки! Теперь ты можешь дать мне челлендж!</p>
+            <button class="btn btn-create-challenge" onclick="createChallenge()">Создать Мой Челлендж</button>
+        </div>
+    </div>
+
+    <div class="disclaimer">
+        ⚠️ Атилла не несет ответственности за написанное. Все шутки в добрых целях.
+    </div>
+
+    <script>
+        const tasks = [
+            {id: 1, title: "20 Отжиманий", description: "Сделай 20 отжиманий от пола.", roast: "Ну, если ты вообще способен... 💪"},
+            {id: 2, title: "Пробежка на 1км", description: "Пробеги 1 км.", roast: "Надеюсь ноги помнят как работать 🏃"},
+            {id: 3, title: "100 Приседаний", description: "100 приседаний с правильной техникой.", roast: "Не упади в обморок 😅"},
+            {id: 4, title: "Планка 2 минуты", description: "Держи планку ровно 2 минуты.", roast: "Можешь? 👀"},
+            {id: 5, title: "30 Бёрпи", description: "30 бёрпи полная версия!", roast: "Вызов принят? 😏"},
+            {id: 6, title: "Прочитай FAQ Спорту", description: "О важности разминки и восстановления.", roast: "Может поймешь про спорт 📚"}
+        ];
+
+        let completedTasks = new Set();
+
+        function renderTasks() {
+            const container = document.getElementById('taskContainer');
+            container.innerHTML = '';
+
+            tasks.forEach((task, index) => {
+                const isCompleted = completedTasks.has(task.id);
+                const taskEl = document.createElement('div');
+                taskEl.className = `task ${isCompleted ? 'completed' : 'active'}`;
+                taskEl.innerHTML = `
+                    <div class="task-title">
+                        <div class="task-number">${task.id}</div>
+                        <span>${task.title}</span>
+                        ${isCompleted ? '✅' : ''}
+                    </div>
+                    <div class="task-description">${task.description}</div>
+                    <div class="task-roast">"${task.roast}"</div>
+                    <button class="btn btn-complete" ${isCompleted ? 'disabled' : ''} onclick="completeTask(${task.id})">
+                        ${isCompleted ? 'Выполнено ✅' : 'Выполнил'}
+                    </button>
+                `;
+                container.appendChild(taskEl);
+            });
+
+            updateProgress();
+        }
+
+        function completeTask(taskId) {
+            completedTasks.add(taskId);
+            localStorage.setItem('completedTasks', JSON.stringify(Array.from(completedTasks)));
+            renderTasks();
+
+            if (completedTasks.size === tasks.length) {
+                document.getElementById('unlockSection').classList.add('active');
+            }
+        }
+
+        function updateProgress() {
+            const progress = (completedTasks.size / tasks.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressFill').textContent = Math.round(progress) + '%';
+        }
+
+        function createChallenge() {
+            const text = prompt('Введи свой челлендж:');
+            if (text) alert(`Челлендж: "${text}"\n\nПринято! 💪`);
+        }
+
+        function loadProgress() {
+            const saved = localStorage.getItem('completedTasks');
+            if (saved) completedTasks = new Set(JSON.parse(saved));
+        }
+
+        loadProgress();
+        renderTasks();
+        if (completedTasks.size === tasks.length) {
+            document.getElementById('unlockSection').classList.add('active');
+        }
+    </script>
+</body>
+</html>
