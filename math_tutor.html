@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Математика с Репетитором 🧮</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 60px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 42px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 40px;
+            gap: 20px;
+        }
+
+        .score-item {
+            background: #f0f0f0;
+            padding: 15px 30px;
+            border-radius: 10px;
+            border-left: 5px solid #4CAF50;
+        }
+
+        .score-item.wrong {
+            border-left-color: #f44336;
+        }
+
+        .score-label {
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .score-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .problem-box {
+            background: linear-gradient(135deg, #fff5e1 0%, #ffe0b2 100%);
+            padding: 40px 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 3px solid #ff9800;
+        }
+
+        .problem-text {
+            font-size: 28px;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        #answerInput {
+            padding: 12px 20px;
+            font-size: 20px;
+            border: 2px solid #ff9800;
+            border-radius: 10px;
+            width: 120px;
+            text-align: center;
+        }
+
+        #answerInput:focus {
+            outline: none;
+            border-color: #f5576c;
+            box-shadow: 0 0 10px rgba(245, 87, 108, 0.3);
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #checkBtn {
+            background: #4CAF50;
+            color: white;
+            padding: 12px 40px;
+            font-size: 18px;
+        }
+
+        #checkBtn:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+
+        #newProblemBtn {
+            background: #2196F3;
+            color: white;
+        }
+
+        #newProblemBtn:hover {
+            background: #0b7dda;
+            transform: scale(1.05);
+        }
+
+        #resetBtn {
+            background: #f44336;
+            color: white;
+        }
+
+        #resetBtn:hover {
+            background: #da190b;
+            transform: scale(1.05);
+        }
+
+        .message {
+            font-size: 22px;
+            margin-top: 30px;
+            font-weight: bold;
+            min-height: 30px;
+            display: none;
+        }
+
+        .message.correct {
+            color: #4CAF50;
+        }
+
+        .message.wrong {
+            color: #f44336;
+        }
+
+        .emoji-rain {
+            position: fixed;
+            pointer-events: none;
+            font-size: 40px;
+            animation: fall 2s linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .difficulty-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .difficulty-btn {
+            padding: 8px 16px;
+            font-size: 14px;
+            background: #e0e0e0;
+            color: #333;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .difficulty-btn.active {
+            background: #ff9800;
+            color: white;
+            border-color: #f5576c;
+        }
+
+        .difficulty-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .combo {
+            font-size: 24px;
+            color: #ff9800;
+            margin-top: 10px;
+            font-weight: bold;
+            min-height: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧮 Математика с Репетитором 🧮</h1>
+        <p class="subtitle">Проверим, насколько ты готов к экзамену? 😏</p>
+
+        <div class="score-board">
+            <div class="score-item">
+                <div class="score-label">✅ Правильно</div>
+                <div class="score-value" id="correctScore">0</div>
+            </div>
+            <div class="score-item wrong">
+                <div class="score-label">❌ Ошибок</div>
+                <div class="score-value" id="wrongScore">0</div>
+            </div>
+        </div>
+
+        <div class="difficulty-buttons">
+            <button class="difficulty-btn active" data-difficulty="easy">🟢 Легко</button>
+            <button class="difficulty-btn" data-difficulty="medium">🟡 Средне</button>
+            <button class="difficulty-btn" data-difficulty="hard">🔴 Сложно</button>
+        </div>
+
+        <div class="problem-box">
+            <div class="problem-text" id="problem">2 + 2 = ?</div>
+            
+            <div class="input-group">
+                <input type="number" id="answerInput" placeholder="Ответ" />
+            </div>
+
+            <div class="buttons">
+                <button id="checkBtn">Проверить ✓</button>
+                <button id="newProblemBtn">Новый пример ➡️</button>
+                <button id="resetBtn">Сброс 🔄</button>
+            </div>
+        </div>
+
+        <div class="combo" id="combo"></div>
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        const problemText = document.getElementById('problem');
+        const answerInput = document.getElementById('answerInput');
+        const checkBtn = document.getElementById('checkBtn');
+        const newProblemBtn = document.getElementById('newProblemBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const message = document.getElementById('message');
+        const correctScoreElem = document.getElementById('correctScore');
+        const wrongScoreElem = document.getElementById('wrongScore');
+        const comboElem = document.getElementById('combo');
+        const difficultyBtns = document.querySelectorAll('.difficulty-btn');
+
+        let correctScore = 0;
+        let wrongScore = 0;
+        let currentAnswer = 0;
+        let difficulty = 'easy';
+        let combo = 0;
+
+        const correctMessages = [
+            '✨ Ты гений! ✨',
+            '🎉 Огонь! 🔥',
+            '👏 Отлично! 👏',
+            '🚀 Супер! 🚀',
+            '💪 Молодец! 💪',
+            '⭐ Звезда! ⭐',
+            '🎯 В яблочко! 🎯'
+        ];
+
+        const wrongMessages = [
+            '😅 Не совсем... 😅',
+            '🤔 Хм, неправильно 🤔',
+            '😬 Так себе... 😬',
+            '😭 Ой-ой-ой... 😭',
+            '📚 Пора учить! 📚',
+            '🎓 Репетитор плачет... 🎓',
+            '❌ Неверно, попробуй ещё! ❌'
+        ];
+
+        function generateProblem() {
+            let num1, num2, operation, answer;
+            
+            if (difficulty === 'easy') {
+                num1 = Math.floor(Math.random() * 10) + 1;
+                num2 = Math.floor(Math.random() * 10) + 1;
+                const ops = ['+', '-'];
+                operation = ops[Math.floor(Math.random() * ops.length)];
+            } else if (difficulty === 'medium') {
+                num1 = Math.floor(Math.random() * 20) + 1;
+                num2 = Math.floor(Math.random() * 20) + 1;
+                const ops = ['+', '-', '*'];
+                operation = ops[Math.floor(Math.random() * ops.length)];
+            } else {
+                num1 = Math.floor(Math.random() * 100) + 1;
+                num2 = Math.floor(Math.random() * 20) + 1;
+                const ops = ['+', '-', '*', '/'];
+                operation = ops[Math.floor(Math.random() * ops.length)];
+            }
+
+            if (operation === '+') {
+                answer = num1 + num2;
+            } else if (operation === '-') {
+                answer = num1 - num2;
+            } else if (operation === '*') {
+                answer = num1 * num2;
+            } else {
+                answer = Math.floor(num1 / num2);
+            }
+
+            problemText.textContent = `${num1} ${operation} ${num2} = ?`;
+            currentAnswer = answer;
+            answerInput.value = '';
+            answerInput.focus();
+            message.style.display = 'none';
+            comboElem.textContent = '';
+        }
+
+        function checkAnswer() {
+            const userAnswer = parseInt(answerInput.value);
+
+            if (isNaN(userAnswer)) {
+                message.textContent = 'Введи число! 🤨';
+                message.className = 'message wrong';
+                message.style.display = 'block';
+                return;
+            }
+
+            if (userAnswer === currentAnswer) {
+                correctScore++;
+                combo++;
+                correctScoreElem.textContent = correctScore;
+                message.textContent = correctMessages[Math.floor(Math.random() * correctMessages.length)];
+                message.className = 'message correct';
+                
+                if (combo > 1) {
+                    comboElem.textContent = `🔥 COMBO x${combo}! 🔥`;
+                }
+
+                createEmojiRain();
+            } else {
+                wrongScore++;
+                combo = 0;
+                wrongScoreElem.textContent = wrongScore;
+                message.textContent = `${wrongMessages[Math.floor(Math.random() * wrongMessages.length)]} Ответ: ${currentAnswer}`;
+                message.className = 'message wrong';
+            }
+
+            message.style.display = 'block';
+        }
+
+        function createEmojiRain() {
+            const emojis = ['🎉', '✨', '🌟', '💯', '🎯', '🚀', '👏'];
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    const emoji = document.createElement('div');
+                    emoji.className = 'emoji-rain';
+                    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    emoji.style.left = Math.random() * window.innerWidth + 'px';
+                    emoji.style.top = '-50px';
+                    document.body.appendChild(emoji);
+                    setTimeout(() => emoji.remove(), 2000);
+                }, i * 50);
+            }
+        }
+
+        function reset() {
+            correctScore = 0;
+            wrongScore = 0;
+            combo = 0;
+            correctScoreElem.textContent = '0';
+            wrongScoreElem.textContent = '0';
+            comboElem.textContent = '';
+            message.style.display = 'none';
+            generateProblem();
+        }
+
+        checkBtn.addEventListener('click', checkAnswer);
+        newProblemBtn.addEventListener('click', generateProblem);
+        resetBtn.addEventListener('click', reset);
+
+        answerInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') checkAnswer();
+        });
+
+        difficultyBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                difficultyBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                difficulty = this.dataset.difficulty;
+                reset();
+            });
+        });
+
+        generateProblem();
+    </script>
+</body>
+</html>
